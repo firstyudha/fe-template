@@ -1,4 +1,5 @@
-import React from 'react'
+import React,  { useState, useEffect } from 'react'
+import {getTodos, deleteTodo, updateTodo, createTodo } from '../../services/ReportLeadsServices';
 
 import {
   CAvatar,
@@ -29,105 +30,86 @@ import {
   cilPeople,
 } from '@coreui/icons'
 
-import avatar1 from 'src/assets/images/avatars/1.jpg'
-import avatar2 from 'src/assets/images/avatars/2.jpg'
-import avatar3 from 'src/assets/images/avatars/3.jpg'
-import avatar4 from 'src/assets/images/avatars/4.jpg'
-import avatar5 from 'src/assets/images/avatars/5.jpg'
-import avatar6 from 'src/assets/images/avatars/6.jpg'
+
+// Popup Component
+const Popup = ({ status, onStatusChange, onClose, onSubmit }) => {
+  return (
+    <div className="bg-body-tertiary text-center"
+      style={{
+        position: "fixed",
+        top: "50%",
+        left: "50%",
+        transform: "translate(-50%, -50%)",
+        padding: "20px",
+        backgroundColor: "black",
+        border: "1px solid #ccc",
+        borderRadius: "8px",
+        boxShadow: "0 4px 8px rgba(0,0,0,0.2)",
+      }}
+    >
+      <h3>Change Status</h3>
+      <label htmlFor="status-dropdown">Select Status:</label>
+      <select
+        id="status-dropdown"
+        value={status}
+        onChange={onStatusChange}
+        style={{ margin: "10px 0", padding: "5px" }}
+      >
+        <option value="Pending">Pending</option>
+        <option value="In Progress">In Progress</option>
+        <option value="Completed">Completed</option>
+      </select>
+      <p>Current Status: {status}</p>
+      <div class="ms-1">
+      <button type="button" class="btn btn-danger rounded-pill" onClick={onClose}>Cancel</button>
+      <button type="button" class="btn btn-success rounded-pill" onClick={onSubmit}>Submit</button>
+      </div>
+    </div>
+  );
+};
 
 const Lead = () => {
 
-  const tableExample = [
-    {
-      avatar: { src: avatar1, status: 'success' },
-      user: {
-        name: 'Yiorgos Avraamu',
-        new: true,
-        registered: 'Jan 1, 2023',
-      },
-      country: { name: 'USA', flag: cifUs },
-      usage: {
-        value: 50,
-        period: 'Jun 11, 2023 - Jul 10, 2023',
-        color: 'success',
-      },
-      payment: { name: 'Mastercard', icon: cibCcMastercard },
-      activity: '10 sec ago',
-    },
-    {
-      avatar: { src: avatar2, status: 'danger' },
-      user: {
-        name: 'Avram Tarasios',
-        new: false,
-        registered: 'Jan 1, 2023',
-      },
-      country: { name: 'Brazil', flag: cifBr },
-      usage: {
-        value: 22,
-        period: 'Jun 11, 2023 - Jul 10, 2023',
-        color: 'info',
-      },
-      payment: { name: 'Visa', icon: cibCcVisa },
-      activity: '5 minutes ago',
-    },
-    {
-      avatar: { src: avatar3, status: 'warning' },
-      user: { name: 'Quintin Ed', new: true, registered: 'Jan 1, 2023' },
-      country: { name: 'India', flag: cifIn },
-      usage: {
-        value: 74,
-        period: 'Jun 11, 2023 - Jul 10, 2023',
-        color: 'warning',
-      },
-      payment: { name: 'Stripe', icon: cibCcStripe },
-      activity: '1 hour ago',
-    },
-    {
-      avatar: { src: avatar4, status: 'secondary' },
-      user: { name: 'Enéas Kwadwo', new: true, registered: 'Jan 1, 2023' },
-      country: { name: 'France', flag: cifFr },
-      usage: {
-        value: 98,
-        period: 'Jun 11, 2023 - Jul 10, 2023',
-        color: 'danger',
-      },
-      payment: { name: 'PayPal', icon: cibCcPaypal },
-      activity: 'Last month',
-    },
-    {
-      avatar: { src: avatar5, status: 'success' },
-      user: {
-        name: 'Agapetus Tadeáš',
-        new: true,
-        registered: 'Jan 1, 2023',
-      },
-      country: { name: 'Spain', flag: cifEs },
-      usage: {
-        value: 22,
-        period: 'Jun 11, 2023 - Jul 10, 2023',
-        color: 'primary',
-      },
-      payment: { name: 'Google Wallet', icon: cibCcApplePay },
-      activity: 'Last week',
-    },
-    {
-      avatar: { src: avatar6, status: 'danger' },
-      user: {
-        name: 'Friderik Dávid',
-        new: true,
-        registered: 'Jan 1, 2023',
-      },
-      country: { name: 'Poland', flag: cifPl },
-      usage: {
-        value: 43,
-        period: 'Jun 11, 2023 - Jul 10, 2023',
-        color: 'success',
-      },
-      payment: { name: 'Amex', icon: cibCcAmex },
-      activity: 'Last week',
-    },
-  ]
+
+  const [showPopup, setShowPopup] = useState(false);
+  const [status, setStatus] = useState("Pending");
+
+  const [todos, setTodos] = useState([]);
+
+  const togglePopup = () => {
+    setShowPopup(!showPopup);
+  };
+
+  const toggleSubmit = () => {
+    setStatus(status)
+    console.log(status)
+    
+    setShowPopup(!showPopup);
+  }
+
+  const handleStatusChange = (event) => {
+    setStatus(event.target.value);
+  };
+
+  useEffect(() => {
+    const fetchTodos = async () => {
+      try {
+        const data = await getTodos();
+        setTodos(data.slice(1,10));
+        console.log("DATA NYA : ", data)
+      } catch (error) {
+        console.error('Failed to fetch todos:', error);
+      } finally {
+        setLoading(false);
+      }
+    };
+  
+    fetchTodos();
+  }, []);
+
+  useEffect(() => {
+    //console.log('Todos state actually updated:', todos);
+  }, [todos]);
 
   return (
     <>
@@ -139,48 +121,53 @@ const Lead = () => {
                 <CTableHeaderCell className="bg-body-tertiary text-center">
                   <CIcon icon={cilPeople} />
                 </CTableHeaderCell>
-                <CTableHeaderCell className="bg-body-tertiary">User</CTableHeaderCell>
+                <CTableHeaderCell className="bg-body-tertiary">Leads ID</CTableHeaderCell>
                 <CTableHeaderCell className="bg-body-tertiary text-center">
-                  Country
+                  Nama
                 </CTableHeaderCell>
-                <CTableHeaderCell className="bg-body-tertiary">Usage</CTableHeaderCell>
+                <CTableHeaderCell className="bg-body-tertiary">Email</CTableHeaderCell>
                 <CTableHeaderCell className="bg-body-tertiary text-center">
-                  Payment Method
+                  No HP
                 </CTableHeaderCell>
-                <CTableHeaderCell className="bg-body-tertiary">Activity</CTableHeaderCell>
+                <CTableHeaderCell className="bg-body-tertiary">Alamat</CTableHeaderCell>
+                <CTableHeaderCell className="bg-body-tertiary">Follow Up</CTableHeaderCell>
               </CTableRow>
             </CTableHead>
             <CTableBody>
-              {tableExample.map((item, index) => (
-                <CTableRow v-for="item in tableItems" key={index}>
+              {todos.map((item) => (
+                <CTableRow v-for="item in tableItems" key={item.id}>
                   <CTableDataCell className="text-center">
-                    <CAvatar size="md" src={item.avatar.src} status={item.avatar.status} />
+                  {item.userId}
                   </CTableDataCell>
                   <CTableDataCell>
-                    <div>{item.user.name}</div>
+                    <div>{item.id}</div>
                     <div className="small text-body-secondary text-nowrap">
-                      <span>{item.user.new ? 'New' : 'Recurring'}</span> | Registered:{' '}
-                      {item.user.registered}
+                      {/* <span>{item.user.new ? 'New' : 'Recurring'}</span> | Registered:{' '}
+                      {item.user.registered} */}
                     </div>
                   </CTableDataCell>
                   <CTableDataCell className="text-center">
-                    <CIcon size="xl" icon={item.country.flag} title={item.country.name} />
+                    {/* <CIcon size="xl" icon={item.country.flag} title={item.country.name} /> */}
+                    {item.title}
                   </CTableDataCell>
                   <CTableDataCell>
                     <div className="d-flex justify-content-between text-nowrap">
-                      <div className="fw-semibold">{item.usage.value}%</div>
+                      {/* <div className="fw-semibold">{item.usage.value}%</div> */}
                       <div className="ms-3">
-                        <small className="text-body-secondary">{item.usage.period}</small>
+                        <small className="text-body-secondary">{item.completed ? "Yes" : "No"}</small>
                       </div>
                     </div>
-                    <CProgress thin color={item.usage.color} value={item.usage.value} />
+                    {/* <CProgress thin color={item.usage.color} value={item.usage.value} /> */}
                   </CTableDataCell>
                   <CTableDataCell className="text-center">
-                    <CIcon size="xl" icon={item.payment.icon} />
+                    {/* <CIcon size="xl" icon={item.payment.icon} /> */}
                   </CTableDataCell>
                   <CTableDataCell>
                     <div className="small text-body-secondary text-nowrap">Last login</div>
                     <div className="fw-semibold text-nowrap">{item.activity}</div>
+                  </CTableDataCell>
+                  <CTableDataCell>
+                    <div className="fw-semibold text-nowrap"><button onClick={togglePopup}>Update</button></div>
                   </CTableDataCell>
                 </CTableRow>
               ))}
@@ -188,6 +175,15 @@ const Lead = () => {
           </CTable>
         </CCol>
       </CRow>
+      {/* Render Popup Component */}
+      {showPopup && (
+        <Popup
+          status={status}
+          onStatusChange={handleStatusChange}
+          onClose={togglePopup}
+          onSubmit={toggleSubmit}
+        />
+      )}
     </>
   )
 }

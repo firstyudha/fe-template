@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useState } from 'react'
 import { Link } from 'react-router-dom'
 import {
   CButton,
@@ -15,14 +15,32 @@ import {
 } from '@coreui/react'
 import CIcon from '@coreui/icons-react'
 import { cilLockLocked, cilUser } from '@coreui/icons'
-import { useNavigate } from 'react-router-dom';
+import { useMutation } from '@tanstack/react-query'
 
 const Login = () => {
-  let navigate = useNavigate();
 
-  const handleLogin = () => {
-    navigate('/dashboard')
+  const [email, setEmail] = useState('')
+  const [password, setPassword] = useState('')
+
+  const { data, mutate } = useMutation({
+    queryKey: ["login", { email, password }],
+    mutationFn: () => {
+      fetch('http://68.183.191.111:8080/api/v1/auth/login', {
+        method: 'POST',
+        body: JSON.stringify({
+          email, password
+        }),
+        headers: {
+          'Content-type': 'application/json',
+        },
+      }).then((response) => response.json())
+    },
+  });
+
+  const handleSubmit = () => {
+    mutate()
   }
+
 
   return (
     <div className="bg-body-tertiary min-vh-100 d-flex flex-row align-items-center">
@@ -39,7 +57,7 @@ const Login = () => {
                       <CInputGroupText>
                         <CIcon icon={cilUser} />
                       </CInputGroupText>
-                      <CFormInput placeholder="Username" autoComplete="username" />
+                      <CFormInput placeholder="Username" autoComplete="username" onChange={(event) => setEmail(event.target.value)} />
                     </CInputGroup>
                     <CInputGroup className="mb-4">
                       <CInputGroupText>
@@ -49,11 +67,12 @@ const Login = () => {
                         type="password"
                         placeholder="Password"
                         autoComplete="current-password"
+                        onChange={(event) => setPassword(event.target.value)}
                       />
                     </CInputGroup>
                     <CRow>
                       <CCol xs={6}>
-                        <CButton color="primary" className="px-4" onClick={handleLogin}>
+                        <CButton color="primary" className="px-4" onClick={handleSubmit}>
                           Login
                         </CButton>
                       </CCol>
