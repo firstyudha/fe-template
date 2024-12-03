@@ -75,6 +75,7 @@ const Lead = () => {
   const [status, setStatus] = useState("Pending");
 
   const [todos, setTodos] = useState([]);
+  const [loading, setLoading] = useState([]);
 
   const togglePopup = () => {
     setShowPopup(!showPopup);
@@ -95,8 +96,7 @@ const Lead = () => {
     const fetchTodos = async () => {
       try {
         const data = await getTodos();
-        setTodos(data.slice(1,10));
-        console.log("DATA NYA : ", data)
+        setTodos(data.data);
       } catch (error) {
         console.error('Failed to fetch todos:', error);
       } finally {
@@ -108,7 +108,6 @@ const Lead = () => {
   }, []);
 
   useEffect(() => {
-    //console.log('Todos state actually updated:', todos);
   }, [todos]);
 
   return (
@@ -119,53 +118,52 @@ const Lead = () => {
             <CTableHead className="text-nowrap">
               <CTableRow>
                 <CTableHeaderCell className="bg-body-tertiary text-center">
-                  <CIcon icon={cilPeople} />
-                </CTableHeaderCell>
-                <CTableHeaderCell className="bg-body-tertiary">Leads ID</CTableHeaderCell>
-                <CTableHeaderCell className="bg-body-tertiary text-center">
-                  Nama
+                  Name
                 </CTableHeaderCell>
                 <CTableHeaderCell className="bg-body-tertiary">Email</CTableHeaderCell>
                 <CTableHeaderCell className="bg-body-tertiary text-center">
-                  No HP
+                  Phone Number
                 </CTableHeaderCell>
-                <CTableHeaderCell className="bg-body-tertiary">Alamat</CTableHeaderCell>
+                <CTableHeaderCell className="bg-body-tertiary">Address</CTableHeaderCell>
+                <CTableHeaderCell className="bg-body-tertiary">Category</CTableHeaderCell>
+                <CTableHeaderCell className="bg-body-tertiary">Campaign Name</CTableHeaderCell>
+                <CTableHeaderCell className="bg-body-tertiary">Product Image</CTableHeaderCell>
+                <CTableHeaderCell className="bg-body-tertiary">Product Desc</CTableHeaderCell>
+                <CTableHeaderCell className="bg-body-tertiary">Product Price</CTableHeaderCell>
                 <CTableHeaderCell className="bg-body-tertiary">Follow Up</CTableHeaderCell>
               </CTableRow>
             </CTableHead>
             <CTableBody>
-              {todos.map((item) => (
-                <CTableRow v-for="item in tableItems" key={item.id}>
+              {todos.map((item, index) => (
+                <CTableRow v-for="item in tableItems" key={item.campaign_id+index}>
                   <CTableDataCell className="text-center">
-                  {item.userId}
-                  </CTableDataCell>
-                  <CTableDataCell>
-                    <div>{item.id}</div>
-                    <div className="small text-body-secondary text-nowrap">
-                      {/* <span>{item.user.new ? 'New' : 'Recurring'}</span> | Registered:{' '}
-                      {item.user.registered} */}
-                    </div>
+                  {item.name}
                   </CTableDataCell>
                   <CTableDataCell className="text-center">
-                    {/* <CIcon size="xl" icon={item.country.flag} title={item.country.name} /> */}
-                    {item.title}
-                  </CTableDataCell>
-                  <CTableDataCell>
-                    <div className="d-flex justify-content-between text-nowrap">
-                      {/* <div className="fw-semibold">{item.usage.value}%</div> */}
-                      <div className="ms-3">
-                        <small className="text-body-secondary">{item.completed ? "Yes" : "No"}</small>
-                      </div>
-                    </div>
-                    {/* <CProgress thin color={item.usage.color} value={item.usage.value} /> */}
+                  {item.email}
                   </CTableDataCell>
                   <CTableDataCell className="text-center">
-                    {/* <CIcon size="xl" icon={item.payment.icon} /> */}
+                  {item.phone_number}
                   </CTableDataCell>
-                  <CTableDataCell>
-                    <div className="small text-body-secondary text-nowrap">Last login</div>
-                    <div className="fw-semibold text-nowrap">{item.activity}</div>
+                  <CTableDataCell className="text-center">
+                  {item.address}
                   </CTableDataCell>
+                  <CTableDataCell className="text-center">
+                  {item.category}
+                  </CTableDataCell>
+                  <CTableDataCell className="text-center">
+                  {item.campaign_name}
+                  </CTableDataCell>
+                  <CTableDataCell className="text-center">
+                  <img className="d-block w-100" src={item.product_image} alt="slide 1" />
+                  </CTableDataCell>
+                  <CTableDataCell className="text-center">
+                  {item.product_desc}
+                  </CTableDataCell>
+                  <CTableDataCell className="text-center">
+                  {item.product_price}
+                  </CTableDataCell>
+                  
                   <CTableDataCell>
                     <div className="fw-semibold text-nowrap"><button onClick={togglePopup}>Update</button></div>
                   </CTableDataCell>
