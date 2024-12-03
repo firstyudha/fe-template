@@ -25,7 +25,7 @@ const Login = () => {
 
   const { mutate, isLoading, isError, error, data } = useMutation({
     mutationFn: async () => {
-      const response = await fetch('http://68.183.191.111:8080/api/v1/auth/login', {
+      const response = await fetch('http://188.166.231.97:8080/api/v1/auth/login', {
         method: 'POST',
         body: JSON.stringify({
           email,
@@ -44,6 +44,8 @@ const Login = () => {
     },
     onSuccess: (data) => {
       console.log("Login successful:", data); // Handle success -> navigate ke dashboard
+      console.log(data)
+      sessionStorage.setItem("auth", data.data);
       navigate('/dashboard')
     },
     onError: (error) => {

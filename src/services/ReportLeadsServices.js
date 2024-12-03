@@ -1,11 +1,16 @@
 import axios from 'axios';
 
-const API_URL = 'https://jsonplaceholder.typicode.com/todos';
+const API_URL = 'http://188.166.231.97:8080/api/v1/leads';
 
 // Fetch all todos
 const getTodos = async () => {
   try {
-    const response = await axios.get(API_URL);
+    let token = sessionStorage.getItem("auth");
+    const response = await axios.get(API_URL, {
+      headers: {
+        'Authorization': `Bearer ${token}`
+      }
+    });
     return response.data;
   } catch (error) {
     console.error('Error fetching todos:', error);
