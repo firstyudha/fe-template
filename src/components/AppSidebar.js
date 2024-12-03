@@ -2,8 +2,8 @@ import React from 'react'
 import { useSelector, useDispatch } from 'react-redux'
 
 import {
+  CCardImage,
   CCloseButton,
-  CNavTitle,
   CSidebar,
   CSidebarBrand,
   CSidebarFooter,
@@ -15,6 +15,7 @@ import CIcon from '@coreui/icons-react'
 import { AppSidebarNav } from './AppSidebarNav'
 
 import { sygnet } from 'src/assets/brand/sygnet'
+import logo from 'src/assets/brand/logo.png'
 
 // sidebar nav config
 import navigation from '../_nav'
@@ -22,7 +23,7 @@ import navigation from '../_nav'
 const AppSidebar = () => {
   const dispatch = useDispatch()
   const unfoldable = useSelector((state) => state.sidebarUnfoldable)
-  const sidebarShow = useSelector((state) => state.sidebarShow)
+  const {sidebarShow} = useSelector((state) => state.sidebarShow)
 
   return (
     <CSidebar
@@ -37,7 +38,7 @@ const AppSidebar = () => {
     >
       <CSidebarHeader className="border-bottom">
         <CSidebarBrand to="/">
-          <CNavTitle customClassName="sidebar-brand-full">Save Your Leads</CNavTitle>
+          <CCardImage customClassName="sidebar-brand-full" src={logo} />
           <CIcon customClassName="sidebar-brand-narrow" icon={sygnet} height={32} />
         </CSidebarBrand>
         <CCloseButton

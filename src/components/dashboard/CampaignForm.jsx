@@ -27,6 +27,7 @@ export default function CampaignForm({ addCampaign }) {
           name="category"
           value={newProduct.category}
           onChange={(e) => setNewProduct({ ...newProduct, [e.target.name]: e.target.value })}></CFormInput>
+    
         <CFormInput className="mb-3" controlId="exampleForm.ControlInput1"
           type="text"
           placeholder="Product Desc"
