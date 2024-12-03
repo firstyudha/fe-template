@@ -55,9 +55,10 @@ const Popup = ({ status, onStatusChange, onClose, onSubmit }) => {
         onChange={onStatusChange}
         style={{ margin: "10px 0", padding: "5px" }}
       >
-        <option value="Pending">Pending</option>
-        <option value="In Progress">In Progress</option>
-        <option value="Completed">Completed</option>
+        <option value="NEW">New</option>
+        <option value="APV">Interested</option>
+        <option value="RJC">Not Interested</option>
+        <option value="FLW">Follow-up</option>
       </select>
       <p>Current Status: {status}</p>
       <div class="ms-1">
@@ -130,6 +131,7 @@ const Lead = () => {
                 <CTableHeaderCell className="bg-body-tertiary">Product Image</CTableHeaderCell>
                 <CTableHeaderCell className="bg-body-tertiary">Product Desc</CTableHeaderCell>
                 <CTableHeaderCell className="bg-body-tertiary">Product Price</CTableHeaderCell>
+                <CTableHeaderCell className="bg-body-tertiary">Status</CTableHeaderCell>
                 <CTableHeaderCell className="bg-body-tertiary">Follow Up</CTableHeaderCell>
               </CTableRow>
             </CTableHead>
@@ -162,6 +164,9 @@ const Lead = () => {
                   </CTableDataCell>
                   <CTableDataCell className="text-center">
                   {item.product_price}
+                  </CTableDataCell>
+                  <CTableDataCell className="text-center">
+                  {item.status}
                   </CTableDataCell>
                   
                   <CTableDataCell>
