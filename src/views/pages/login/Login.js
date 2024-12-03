@@ -1,5 +1,5 @@
 import React, { useState } from 'react'
-import { Link } from 'react-router-dom'
+import { Link, useNavigate } from 'react-router-dom'
 import {
   CButton,
   CCard,
@@ -19,24 +19,39 @@ import { useMutation } from '@tanstack/react-query'
 
 const Login = () => {
 
+  let navigate = useNavigate();
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
 
-  const { data, mutate } = useMutation({
-    queryKey: ["login", { email, password }],
-    mutationFn: () => {
-      fetch('http://68.183.191.111:8080/api/v1/auth/login', {
+  const { mutate, isLoading, isError, error, data } = useMutation({
+    mutationFn: async () => {
+      const response = await fetch('http://188.166.231.97:8080/api/v1/auth/login', {
         method: 'POST',
         body: JSON.stringify({
-          email, password
+          email,
+          password,
         }),
         headers: {
           'Content-type': 'application/json',
         },
-      }).then((response) => response.json())
-    },
-  });
+      });
 
+      if (!response.ok) {
+        throw new Error('Login failed!'); // Throw error for handling later
+      }
+
+      return response.json();
+    },
+    onSuccess: (data) => {
+      console.log("Login successful:", data); // Handle success -> navigate ke dashboard
+      console.log(data)
+      sessionStorage.setItem("auth", data.data);
+      navigate('/dashboard')
+    },
+    onError: (error) => {
+      console.error("Error during login:", error); // Handle error during login
+    },
+  }); 
   const handleSubmit = () => {
     mutate()
   }
