@@ -1,12 +1,14 @@
 import axios from 'axios';
 
-const API_URL = 'http://188.166.231.97:8080/api/v1/leads';
+const GET_LEADS_URL = 'http://188.166.231.97:8080/api/v1/leads';
+const UPDATE_LEADS_URL = 'http://188.166.231.97:8080/api/v1/leads/update';
 
-// Fetch all todos
-const getTodos = async () => {
+
+// Fetch all leads
+const getLeads = async () => {
   try {
     let token = sessionStorage.getItem("auth");
-    const response = await axios.get(API_URL, {
+    const response = await axios.get(GET_LEADS_URL, {
       headers: {
         'Authorization': `Bearer ${token}`
       }
@@ -18,66 +20,44 @@ const getTodos = async () => {
   }
 };
 
-// Create a new todo
-const createTodo = async (todoData) => {
-    try {
-      const response = await axios.post(`${API_URL}/add`, {
-        todo: todoData.todo,          // Send just the todo text
-        completed: false,
-        userId: 1
-      });
-      
-      // Transform the response to match our expected format
-      return {
-        id: response.data.id,
-        todo: response.data.todo, // Make sure this is a string, not an object
-        completed: response.data.completed,
-        userId: response.data.userId
-      };
-    } catch (error) {
-      console.error('Error creating todo:', error.response?.data || error.message);
-      throw error;
-    }
-  };
-
-// Delete a todo
-const deleteTodo = async (id) => {
-  try {
-    const response = await axios.delete(`${API_URL}/${id}`);
-    // Check if the deletion was successful
-    if (response.data.isDeleted) {
-      return { success: true, id };
-    } else {
-      throw new Error('Failed to delete todo');
-    }
-  } catch (error) {
-    console.error('Error deleting todo:', error);
-    throw error;
-  }
-};
+// // Fetch leads by id
+// const getLeadsById = async (data) => {
+//   try {
+//     let token = sessionStorage.getItem("auth");
+//     const response = await axios.post(GET_LEADS_BY_ID_URL, {
+//       id: data.id},
+//     {
+//       headers: {
+//         'Authorization': `Bearer ${token}`
+//       }
+//     });
+//     return response.data;
+//   } catch (error) {
+//     console.error('Error fetching todos:', error);
+//     throw error;
+//   }
+// };
 
 // Update an existing todo
-const updateTodo = async (id, updatedTodo) => {
+const updateLeads = async (id, updateLeads) => {
   try {
-    const response = await axios.put(`${API_URL}/${id}`, {
-      completed: updatedTodo.completed
+    let token = sessionStorage.getItem("auth");
+    const response = await axios.post(UPDATE_LEADS_URL, {
+      id: id,
+      status: updateLeads
     }, {
       headers: {
-        'Content-Type': 'application/json'
+        'Content-Type': 'application/json',
+        'Authorization': `Bearer ${token}`
       }
     });
 
     // Return the updated todo with the correct structure
-    return {
-      id: response.data.id,
-      todo: response.data.todo,
-      completed: response.data.completed,
-      userId: response.data.userId
-    };
+    return response.data
   } catch (error) {
     console.error('Error updating todo:', error);
     throw error;
   }
 };
 
-export { getTodos, createTodo, deleteTodo, updateTodo };
+export { getLeads, updateLeads };
