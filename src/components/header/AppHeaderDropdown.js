@@ -1,32 +1,15 @@
 import React from 'react'
 import {
   CAvatar,
-  CBadge,
   CDropdown,
-  CDropdownDivider,
   CDropdownHeader,
   CDropdownItem,
   CDropdownMenu,
   CDropdownToggle,
 } from '@coreui/react'
-import {
-  cilBell,
-  cilCreditCard,
-  cilCommentSquare,
-  cilEnvelopeOpen,
-  cilFile,
-  cilLockLocked,
-  cilSettings,
-  cilTask,
-  cilUser,
-  cilInputPower,
-  cilArrowLeft,
-  cilArrowRight,
-  cilDoor,
-} from '@coreui/icons'
-import CIcon from '@coreui/icons-react'
 
 import avatar8 from './../../assets/brand/logo-tereact.png'
+import { Logout } from '../../views/pages/logout/Logout'
 
 const AppHeaderDropdown = () => {
   return (
@@ -37,8 +20,7 @@ const AppHeaderDropdown = () => {
       <CDropdownMenu className="pt-0" placement="bottom-end">
         <CDropdownHeader className="bg-body-secondary fw-semibold mb-2">Account</CDropdownHeader>
         <CDropdownItem href="#">
-          <CIcon icon={cilDoor} className="me-2" />
-          Logout
+          <Logout />
         </CDropdownItem>
       </CDropdownMenu>
     </CDropdown>

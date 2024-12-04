@@ -3,7 +3,7 @@ import React, { useEffect, useRef } from 'react'
 import { CChartLine } from '@coreui/react-chartjs'
 import { getStyle } from '@coreui/utils'
 
-const MainChart = () => {
+export default function MainChart({analytics}) {
   const chartRef = useRef(null)
 
   useEffect(() => {
@@ -24,60 +24,42 @@ const MainChart = () => {
         })
       }
     })
-  }, [chartRef])
-
-  const random = () => Math.round(Math.random() * 100)
+  }, [chartRef, analytics])
 
   return (
-    <>
+    <div>
       <CChartLine
         ref={chartRef}
         style={{ height: '300px', marginTop: '40px' }}
         data={{
-          labels: ['January', 'February', 'March', 'April', 'May', 'June', 'July'],
+          labels: ["Leads", "Campaign", "Order"],
           datasets: [
             {
-              label: 'My First dataset',
+              label: 'Leads',
               backgroundColor: `rgba(${getStyle('--cui-info-rgb')}, .1)`,
               borderColor: getStyle('--cui-info'),
               pointHoverBackgroundColor: getStyle('--cui-info'),
               borderWidth: 2,
-              data: [
-                random(50, 200),
-                random(50, 200),
-                random(50, 200),
-                random(50, 200),
-                random(50, 200),
-                random(50, 200),
-                random(50, 200),
-              ],
+              data: [10, 2, 3],
               fill: true,
             },
-            {
-              label: 'My Second dataset',
-              backgroundColor: 'transparent',
-              borderColor: getStyle('--cui-success'),
-              pointHoverBackgroundColor: getStyle('--cui-success'),
-              borderWidth: 2,
-              data: [
-                random(50, 200),
-                random(50, 200),
-                random(50, 200),
-                random(50, 200),
-                random(50, 200),
-                random(50, 200),
-                random(50, 200),
-              ],
-            },
-            {
-              label: 'My Third dataset',
-              backgroundColor: 'transparent',
-              borderColor: getStyle('--cui-danger'),
-              pointHoverBackgroundColor: getStyle('--cui-danger'),
-              borderWidth: 1,
-              borderDash: [8, 5],
-              data: [65, 65, 65, 65, 65, 65, 65],
-            },
+            // {
+            //   label: 'Campaign',
+            //   backgroundColor: 'transparent',
+            //   borderColor: getStyle('--cui-success'),
+            //   pointHoverBackgroundColor: getStyle('--cui-success'),
+            //   borderWidth: 2,
+            //   data: [2, 5],
+            // },
+            // {
+            //   label: 'Order',
+            //   backgroundColor: 'transparent',
+            //   borderColor: getStyle('--cui-danger'),
+            //   pointHoverBackgroundColor: getStyle('--cui-danger'),
+            //   borderWidth: 1,
+            //   borderDash: [8, 5],
+            //   data: [10, 2],
+            // },
           ],
         }}
         options={{
@@ -105,7 +87,6 @@ const MainChart = () => {
               grid: {
                 color: getStyle('--cui-border-color-translucent'),
               },
-              max: 250,
               ticks: {
                 color: getStyle('--cui-body-color'),
                 maxTicksLimit: 5,
@@ -126,8 +107,7 @@ const MainChart = () => {
           },
         }}
       />
-    </>
+    </div>
+    
   )
 }
-
-export default MainChart
