@@ -9,7 +9,7 @@ export default function CampaignForm({ addCampaign }) {
   const [selectedCat, setSelectedCat] = useState("Car");
 
   const handleInputChange = (e) => {
-    e.PreventDefault();
+    e.preventDefault();
     addCampaign(newProduct);
     setNewProduct([]);
 
