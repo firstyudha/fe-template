@@ -1,13 +1,13 @@
 import axios from 'axios';
 
-const API_V2 = 'http://188.166.231.97:8080/api/v1';
+const API = 'http://188.166.231.97:8080/api/v1';
 const CAMPAIGN_GET = '/campaign';
 const CAMPAIGN_ADD = '/campaign/create';
 
 export const getListCampaign = async () => {
   try {
       let token = sessionStorage.getItem("auth");
-      const response = await axios.get(API_V2+CAMPAIGN_GET, {
+      const response = await axios.get(API+CAMPAIGN_GET, {
         headers: {
           'Authorization': `Bearer ${token}`
         },
@@ -20,6 +20,7 @@ export const getListCampaign = async () => {
 }
 
 export const addCampaign = async (campaign) => {
+
   // get file
   const myFile = document.querySelector("input[type=file]").files[0];
   // append to form
@@ -34,7 +35,7 @@ export const addCampaign = async (campaign) => {
   let token = sessionStorage.getItem("auth");
 
   try {
-    const response = await axios.post(`${API_V2+CAMPAIGN_ADD}`, data, {
+    const response = await axios.post(`${API+CAMPAIGN_ADD}`, data, {
       headers: {
         "Authorization": `Bearer ${token}`,
         "Content-Type": "multipart/form-data"

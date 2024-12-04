@@ -1,4 +1,4 @@
-import { CButton, CForm, CFormInput } from '@coreui/react';
+import { CButton, CDropdown, CDropdownItem, CDropdownMenu, CDropdownToggle, CForm, CFormInput } from '@coreui/react';
 import { Button } from '@mui/material';
 import React, { useState } from 'react';
 import Editor from 'react-simple-wysiwyg';
@@ -6,6 +6,7 @@ import Editor from 'react-simple-wysiwyg';
 export default function CampaignForm({ addCampaign }) {
   const [newProduct, setNewProduct] = useState([]);
   const [fileName, setFileName] = useState("");
+  const [selectedCat, setSelectedCat] = useState("Car");
 
   const handleInputChange = (e) => {
     e.preventDefault();
@@ -19,8 +20,13 @@ export default function CampaignForm({ addCampaign }) {
     }
   };
 
+  const handleSelectChange = (e) => {
+       setSelectedCat(e.target.value);
+  };
+
   return (
       <form className='p-0' onSubmit={handleInputChange}>
+
         <CFormInput className="mb-3" controlId="exampleForm.ControlInput1"
           type="text"
           placeholder="Category"

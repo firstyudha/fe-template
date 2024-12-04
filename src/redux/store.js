@@ -1,5 +1,6 @@
 import { configureStore, createStore } from "@reduxjs/toolkit";
 import campaignsReducer from "./slices/campaignSlice";
+import dashboardReducer from "./slices/dashboardSlice";
 
 const initialState = {
     sidebarShow: true,
@@ -19,6 +20,7 @@ export const store = configureStore({
     reducer: {
         sidebarShow: changeState,
         campaigns: campaignsReducer,
+        dashboard: dashboardReducer
     },
 })
 
