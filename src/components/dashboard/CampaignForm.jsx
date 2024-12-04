@@ -12,6 +12,9 @@ export default function CampaignForm({ addCampaign }) {
     e.preventDefault();
     addCampaign(newProduct);
     setNewProduct([]);
+
+    const form = e.target
+    form.reset()
   };
 
   const handleFileChange = (e) => {
