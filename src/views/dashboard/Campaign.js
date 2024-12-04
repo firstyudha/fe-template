@@ -10,7 +10,7 @@ export default function Campaign() {
   
   useEffect(() => {
     dispatch(fetchCampaignThunk());
-  }, []);
+  }, [campaigns]);
 
   const handleAddCampaign = async (data) => {
     dispatch(addCampaignThunk(data));
