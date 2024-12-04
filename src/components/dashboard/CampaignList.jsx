@@ -29,7 +29,9 @@ return (
                   </CTableRow>
                 </CTableHead>
                 <CTableBody>
-                  {campaigns.map((campaign) => (
+                  {campaigns.map((campaign) => {
+                    const desc = campaign.campaign_desc
+                    return(
                     <CTableRow v-for="item in tableItems" key={campaign.campaign_id}>
                       <CTableDataCell className="text-center"></CTableDataCell>
                       <CTableDataCell>
@@ -45,10 +47,10 @@ return (
 
                       <CTableDataCell className="text-center">
                         <div className="d-flex justify-content-between text-nowrap">
-                          <div className="fw-semibold">{campaign.campaign_desc}</div>
+                          <div dangerouslySetInnerHTML={{__html: desc}}></div>
                         </div>
                       </CTableDataCell>
-
+                      
                       <CTableDataCell>
                         <div className="d-flex justify-content-between text-nowrap">
                           <img height={100} width={100} src={campaign.product_image}/>
@@ -60,9 +62,9 @@ return (
                       <div className="fw-semibold">Rp{campaign.product_price}</div>
                       </div>
                       </CTableDataCell>
-
                     </CTableRow>
-                  ))}
+                  )}
+                  )}
                 </CTableBody>
               </CTable>
             </CCol>
