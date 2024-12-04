@@ -1,8 +1,8 @@
 import React, { useEffect } from 'react'
 import { fetchCampaignThunk, addCampaignThunk } from '../../redux/slices/campaignSlice'
-import CampaignList from '../../components/dashboard/CampaignList';
 import { useDispatch, useSelector } from 'react-redux';
-import CampaignForm from '../../components/dashboard/campaignForm';
+import CampaignForm from '../../components/dashboard/CampaignForm';
+import CampaignList from '../../components/dashboard/CampaignList';
 
 export default function Campaign() {
   const dispatch = useDispatch();
