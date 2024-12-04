@@ -32,8 +32,8 @@ const Popup = ({ status, onStatusChange, onClose, onSubmit }) => {
         boxShadow: "0 4px 8px rgba(0,0,0,0.2)",
       }}
     >
-      <h3>Change Status</h3>
-      <label htmlFor="status-dropdown">Select Status:</label>
+      <h3>Change Followed Up Status : </h3>
+      <label htmlFor="status-dropdown"></label>
       <select
         id="status-dropdown"
         value={status}
@@ -45,7 +45,6 @@ const Popup = ({ status, onStatusChange, onClose, onSubmit }) => {
         <option value="RJC">Not Interested</option>
         <option value="FLW">Follow-up</option>
       </select>
-      <p>Current Status: {status}</p>
       <div className="ms-1">
         <button type="button" className="btn btn-danger rounded-pill" onClick={onClose}>Cancel</button>
         <button type="button" className="btn btn-success rounded-pill" onClick={onSubmit}>Submit</button>
@@ -58,7 +57,7 @@ const Lead = () => {
 
 
   const [showPopup, setShowPopup] = useState(false);
-  const [status, setStatus] = useState("Pending");
+  const [status, setStatus] = useState("");
 
   const [todos, setTodos] = useState([]);
   const [loading, setLoading] = useState([]);
