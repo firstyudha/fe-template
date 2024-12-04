@@ -1,6 +1,6 @@
 import { CButton, CFormInput } from '@coreui/react';
 import { Button } from '@mui/material';
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import Editor from 'react-simple-wysiwyg';
 
 export default function CampaignForm({ addCampaign }) {
@@ -9,9 +9,11 @@ export default function CampaignForm({ addCampaign }) {
   const [selectedCat, setSelectedCat] = useState("Car");
 
   const handleInputChange = (e) => {
-    e.preventDefault();
     addCampaign(newProduct);
     setNewProduct([]);
+
+    const form = e.target
+    form.reset()
   };
 
   const handleFileChange = (e) => {
